@@ -27,9 +27,19 @@ function  Lightning() {
 
 	this.colors = ['#76e1f7','#fffcc6','#c1e6f4'];
 
+
 	//this.boom();
 
 	this.animate();
+
+	this.canvas.addEventListener('click', function(e){
+		this.pb.x = e.offsetX;
+		this.pb.y = e.offsetY;
+
+		this.end.x = this.pb.x;
+		this.end.y = this.pb.y;
+
+	}.bind(this));
 
 };
 
@@ -50,9 +60,12 @@ Lightning.prototype.boom = function()
 	this.start.draw();
 	this.end.draw();
 
+	this.minBeam  = rand(7,18);
+	
+
 	this.strike(this.pa,this.pb,this.colors[0]);
-	//this.strike(this.pa,this.pb,this.colors[2], this.randomOpacity());
-	this.strike(this.pa,this.pb,this.colors[1], this.randomOpacity());
+	this.strike(this.pa,this.pb,this.colors[2], this.randomOpacity());
+	//this.strike(this.pa,this.pb,this.colors[1], this.randomOpacity());
 }
 
 
@@ -77,9 +90,22 @@ Lightning.prototype.strike = function(pa,pb,stikeColor)
 
 	this.dots = [pa, pb];
 
-	var depth  = 5;
+	var distance = dist(pa,pb);
+	var minBeam = this.minBeam;
 
-	this.breakLine(pa,pb,depth,0,0,100);
+	var maxDepth = 2;
+	for(var i = maxDepth; i < 10; i++)
+	{
+		var d = distance/Math.pow(2,i);
+		if(d >= minBeam)
+		{
+			maxDepth = i;
+		} else {
+			break;
+		}
+	}
+
+	this.breakLine(pa,pb,maxDepth,0,0,100);
 
 	this.dots.sort(function(a,b){
 		if(a.d == b.d)
