@@ -1,0 +1,12 @@
+.wrapper {
+	text-align: center;
+}
+
+body {
+    background: #777;
+}
+
+canvas {
+	border: 1px solid 888#;
+    background: #222;
+}
